@@ -1,3 +1,14 @@
+#!/bin/bash
+
+# Quick fix for movie-card component - restore to standalone with inline template
+
+echo "Fixing movie-card component..."
+
+# Remove the external HTML template that's causing conflicts
+rm -f src/app/components/movie-card/movie-card.component.html
+
+# Restore the movie-card component to its original standalone structure
+cat > src/app/components/movie-card/movie-card.component.ts << 'EOF'
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -179,3 +190,7 @@ export class MovieCardComponent implements OnInit {
     });
   }
 }
+EOF
+
+echo "Movie-card component has been restored to standalone structure with inline template."
+echo "Run 'npm start' to test the application."
