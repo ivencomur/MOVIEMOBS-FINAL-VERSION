@@ -1,63 +1,70 @@
-# 6.4-FINAL-VERSION-TRYOUT
-After many encounters with deprecated versions, incompatible dependencies, and fatal errors, the requirements for exercise 6.4 have been addressed.
+# MovieMobs Angular Client
 
-# MovieMobsAngularIECM
+This project is the front-end client for the MovieMobs application, built using Angular and Angular Material. It provides a user interface for users to browse movies, view details about genres and directors, and manage their user profile.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+## Getting Started
 
-## Development server
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-To start a local development server, run:
+### Prerequisites
 
-```bash
-ng serve
-```
+Before you begin, ensure you have the following installed on your system:
+* **Node.js** and **npm**: You can download them from [nodejs.org](https://nodejs.org/).
+* **Angular CLI**: Install it globally using npm:
+    ```sh
+    npm install -g @angular/cli
+    ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Installation
 
-## Code scaffolding
+1.  **Clone the repository:**
+    ```sh
+    git clone <repository-url>
+    ```
+2.  **Navigate to the project directory:**
+    ```sh
+    cd MOVIEMOBS-FINAL-VERSION-6.5-FRONTEND-TO-START
+    ```
+3.  **Install dependencies:**
+    ```sh
+    npm install
+    ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Available Scripts
 
-```bash
-ng generate component component-name
-```
+In the project directory, you can run the following commands:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### `npm start` or `ng serve`
 
-```bash
-ng generate --help
-```
+This runs the app in development mode. Open [http://localhost:4200](http://localhost:4200) to view it in the browser. The page will automatically reload if you make edits to the source files.
 
-## Building
+### `npm run build` or `ng build`
 
-To build the project run:
+This builds the application for production to the `dist/` directory. It correctly bundles Angular in production mode and optimizes the build for the best performance.
 
-```bash
-ng build
-```
+### `npm run test` or `ng test`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This launches the test runner in interactive watch mode using Karma.
 
-## Running unit tests
+### `npm run watch`
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+This command builds the project and watches for changes, recompiling automatically.
 
-```bash
-ng test
-```
+## Code Scaffolding
 
-## Running end-to-end tests
+To generate new components or other Angular schematics, you can use the `ng generate` command.
 
-For end-to-end (e2e) testing, run:
+* **Generate a component:**
+    ```bash
+    ng generate component component-name
+    ```
+   
+* **See all available schematics:**
+    You can also generate directives, pipes, services, classes, guards, interfaces, enums, and modules.
+    ```bash
+    ng generate --help
+    ```
+   
+## Further Help
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
