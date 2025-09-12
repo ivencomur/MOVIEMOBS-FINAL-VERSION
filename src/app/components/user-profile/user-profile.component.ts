@@ -1,202 +1,149 @@
+/**
+ * Component for managing the user's profile.
+ */
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
 import { FetchApiDataService } from '../../services/fetch-api-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    MatCardModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
+    CommonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    FormsModule
   ],
   template: `
-    <div class="profile-container">
-      <mat-card class="profile-card">
-        <mat-card-header>
-          <mat-card-title>My Profile</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <form>
-            <mat-form-field appearance="fill">
-              <mat-label>Username</mat-label>
-              <input matInput [(ngModel)]="updatedUserData.username" name="username" required>
-            </mat-form-field>
-            
-            <mat-form-field appearance="fill">
-              <mat-label>Email</mat-label>
-              <input matInput type="email" [(ngModel)]="updatedUserData.email" name="email" required>
-            </mat-form-field>
-            
-            <mat-form-field appearance="fill">
-              <mat-label>Birthday</mat-label>
-              <input matInput type="date" [(ngModel)]="updatedUserData.birthday" name="birthday">
-            </mat-form-field>
-          </form>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button color="primary" (click)="updateUser()">Update Profile</button>
-          <button mat-raised-button color="warn" (click)="deleteUser()">Delete Account</button>
-        </mat-card-actions>
-      </mat-card>
-
-      <mat-card class="favorites-card" *ngIf="favoriteMovies.length > 0">
-        <mat-card-header>
-          <mat-card-title>Favorite Movies</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="favorites-grid">
-            <div *ngFor="let movie of favoriteMovies" class="favorite-movie">
-              <h4>{{ movie.Title }}</h4>
-              <p>{{ movie.Genre?.name }} • {{ movie.ReleaseYear }}</p>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <mat-card>
+      <mat-card-title>Your Profile</mat-card-title>
+      <mat-card-content>
+        <form (ngSubmit)="updateUser()">
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="userData.Username" name="Username" required>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput [(ngModel)]="userData.Password" name="Password" type="password">
+            <mat-hint>Leave blank to keep current password</mat-hint>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="userData.Email" name="Email" type="email" required>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Birthday</mat-label>
+            <input matInput [(ngModel)]="userData.Birthday" name="Birthday" type="date">
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit">Update Profile</button>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="warn" (click)="deleteUser()">Delete Account</button>
+      </mat-card-actions>
+    </mat-card>
   `,
   styles: [`
-    .profile-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      gap: 20px;
-    }
-    .profile-card, .favorites-card {
+    mat-card {
       max-width: 500px;
-      width: 100%;
+      margin: 20px auto;
     }
     mat-form-field {
       width: 100%;
-      margin-bottom: 16px;
-    }
-    mat-card-actions {
-      display: flex;
-      justify-content: space-between;
-    }
-    .favorites-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-    }
-    .favorite-movie {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .favorite-movie h4 {
-      margin: 0 0 8px 0;
-    }
-    .favorite-movie p {
-      margin: 0;
-      color: #666;
     }
   `]
 })
 export class UserProfileComponent implements OnInit {
-  user: any = {};
-  favoriteMovies: any[] = [];
-  @Input() updatedUserData = { username: '', email: '', birthday: '' };
 
+  @Input() userData = { Username: '', Password: '', Email: '', Birthday: '' };
+
+  /**
+   * @param fetchApiData Service for API calls.
+   * @param snackBar Service for showing notifications.
+   * @param router Service for navigation.
+   */
   constructor(
     public fetchApiData: FetchApiDataService,
     public snackBar: MatSnackBar,
-    public router: Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getUser();
   }
 
+  /**
+   * Fetches the current user's data to populate the form.
+   */
   getUser(): void {
     this.fetchApiData.getUserProfile().subscribe({
-      next: (resp: any) => {
-        this.user = resp;
-        this.favoriteMovies = resp.favoriteMovies || [];
-        
-        // Pre-populate form with current user data
-        this.updatedUserData = {
-          username: resp.username || '',
-          email: resp.email || '',
-          birthday: resp.birthday ? resp.birthday.split('T')[0] : ''
-        };
-        
-        console.log('User profile loaded:', this.user);
+      next: (result: any) => {
+        const formattedBirthday = result.Birthday ? new Date(result.Birthday).toISOString().split('T')[0] : '';
+        this.userData = { ...result, Birthday: formattedBirthday, Password: '' };
       },
-      error: (error) => {
-        console.error('Error loading user profile:', error);
-        this.snackBar.open('Error loading profile. Please try again.', 'OK', {
-          duration: 4000
-        });
+      error: (error: any) => {
+        this.snackBar.open('Could not load profile.', 'OK', { duration: 4000 });
       }
     });
   }
 
+  /**
+   * Updates the user's profile information.
+   */
   updateUser(): void {
-    // Clean data before sending
-    const cleanedData = {
-      username: this.updatedUserData.username.trim(),
-      email: this.updatedUserData.email.trim().toLowerCase(),
-      birthday: this.updatedUserData.birthday || undefined
+    // Create a new object for the update payload
+    const updatePayload: any = {
+      Username: this.userData.Username,
+      Email: this.userData.Email,
+      Birthday: this.userData.Birthday
     };
 
-    // Remove undefined values
-    Object.keys(cleanedData).forEach(key => {
-      if (cleanedData[key as keyof typeof cleanedData] === undefined) {
-        delete cleanedData[key as keyof typeof cleanedData];
-      }
-    });
+    // Only include the password if the user has entered a new one
+    if (this.userData.Password) {
+      updatePayload.Password = this.userData.Password;
+    }
 
-    this.fetchApiData.editUser(cleanedData).subscribe({
-      next: (result) => {
-        console.log('Profile updated successfully:', result);
-        this.user = result;
-        
-        // Update stored user data
-        localStorage.setItem('user', JSON.stringify(result));
-        
+    this.fetchApiData.editUserProfile(updatePayload).subscribe({
+      next: (result: any) => {
         this.snackBar.open('Profile updated successfully!', 'OK', {
-          duration: 3000
+          duration: 2000
         });
+        localStorage.setItem('user', JSON.stringify(result));
       },
-      error: (error) => {
-        console.error('Error updating profile:', error);
-        this.snackBar.open(error.message || 'Error updating profile. Please try again.', 'OK', {
+      error: (error: any) => {
+        this.snackBar.open('Failed to update profile. Please try again.', 'OK', {
           duration: 4000
         });
       }
     });
   }
 
+  /**
+   * Deletes the user's account.
+   */
   deleteUser(): void {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      this.fetchApiData.deleteUser().subscribe({
-        next: (result) => {
-          console.log('Account deleted successfully:', result);
+      this.fetchApiData.deleteUserProfile().subscribe({
+        next: (result: any) => {
           this.snackBar.open('Account deleted successfully.', 'OK', {
-            duration: 3000
+            duration: 2000
           });
-          
-          // Clear storage and redirect
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
+          localStorage.clear();
           this.router.navigate(['welcome']);
         },
-        error: (error) => {
-          console.error('Error deleting account:', error);
-          this.snackBar.open(error.message || 'Error deleting account. Please try again.', 'OK', {
+        error: (error: any) => {
+          this.snackBar.open('Failed to delete account. Please try again.', 'OK', {
             duration: 4000
           });
         }
