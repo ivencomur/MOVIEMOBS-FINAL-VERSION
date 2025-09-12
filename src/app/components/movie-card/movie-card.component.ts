@@ -23,7 +23,7 @@ import { SynopsisDialogComponent } from '../dialogs/synopsis-dialog/synopsis-dia
   template: `
     <div class="movies-container">
       <h1>Movies</h1>
-      <div class="movies-grid">
+      <div class="movies-grid" *ngIf="movies.length > 0">
         <mat-card *ngFor="let movie of movies" class="movie-card">
           <mat-card-header>
             <mat-card-title>{{ movie.Title }}</mat-card-title>
@@ -36,9 +36,9 @@ import { SynopsisDialogComponent } from '../dialogs/synopsis-dialog/synopsis-dia
           
           <mat-card-content>
             <p>{{ movie.Description | slice:0:100 }}{{ movie.Description?.length > 100 ? '...' : '' }}</p>
-            <p><strong>Genre:</strong> {{ movie.Genre?.name }}</p>
-            <p><strong>Director:</strong> {{ movie.Director?.name }}</p>
-            <p><strong>Year:</strong> {{ movie.ReleaseYear }}</p>
+            <p><strong>Genre:</strong> {{ movie.Genre?.Name || 'Unknown' }}</p>
+            <p><strong>Director:</strong> {{ movie.Director?.Name || 'Unknown' }}</p>
+            <p><strong>Year:</strong> {{ movie.ReleaseYear || 'N/A' }}</p>
           </mat-card-content>
           
           <mat-card-actions>
@@ -54,6 +54,14 @@ import { SynopsisDialogComponent } from '../dialogs/synopsis-dialog/synopsis-dia
             </button>
           </mat-card-actions>
         </mat-card>
+      </div>
+      
+      <div *ngIf="movies.length === 0 && !isLoading" class="no-movies">
+        <p>No movies found. Please check if the backend is running and contains movie data.</p>
+      </div>
+      
+      <div *ngIf="isLoading" class="loading">
+        <p>Loading movies...</p>
       </div>
     </div>
   `,
@@ -83,11 +91,17 @@ import { SynopsisDialogComponent } from '../dialogs/synopsis-dialog/synopsis-dia
       align-items: center;
       flex-wrap: wrap;
     }
+    .no-movies, .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 1.2rem;
+    }
   `]
 })
 export class MovieCardComponent implements OnInit {
   movies: any[] = [];
   favoriteMovies: string[] = [];
+  isLoading = true;
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -101,14 +115,17 @@ export class MovieCardComponent implements OnInit {
   }
 
   getMovies(): void {
+    this.isLoading = true;
     this.fetchApiData.getAllMovies().subscribe({
       next: (resp: any) => {
         this.movies = resp;
+        this.isLoading = false;
         console.log('Movies loaded:', this.movies);
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Error loading movies:', error);
-        this.snackBar.open('Error loading movies. Please try again.', 'OK', {
+        this.snackBar.open('Error loading movies. Please ensure the backend is running.', 'OK', {
           duration: 4000
         });
       }
@@ -118,7 +135,7 @@ export class MovieCardComponent implements OnInit {
   getFavorites(): void {
     this.fetchApiData.getUserProfile().subscribe({
       next: (resp: any) => {
-        this.favoriteMovies = resp.favoriteMovies ? resp.favoriteMovies.map((movie: any) => movie._id || movie) : [];
+        this.favoriteMovies = resp.FavoriteMovies ? resp.FavoriteMovies.map((movie: any) => movie._id || movie) : [];
         console.log('Favorites loaded:', this.favoriteMovies);
       },
       error: (error) => {
@@ -136,7 +153,7 @@ export class MovieCardComponent implements OnInit {
     if (this.isFavorite(movieId)) {
       this.fetchApiData.removeFavoriteMovie(movieId).subscribe({
         next: (resp: any) => {
-          this.favoriteMovies = resp.favoriteMovies ? resp.favoriteMovies.map((movie: any) => movie._id || movie) : [];
+          this.favoriteMovies = resp.FavoriteMovies ? resp.FavoriteMovies.map((movie: any) => movie._id || movie) : [];
           this.snackBar.open('Movie removed from favorites', 'OK', { duration: 2000 });
         },
         error: (error) => {
@@ -147,7 +164,7 @@ export class MovieCardComponent implements OnInit {
     } else {
       this.fetchApiData.addFavoriteMovie(movieId).subscribe({
         next: (resp: any) => {
-          this.favoriteMovies = resp.favoriteMovies ? resp.favoriteMovies.map((movie: any) => movie._id || movie) : [];
+          this.favoriteMovies = resp.FavoriteMovies ? resp.FavoriteMovies.map((movie: any) => movie._id || movie) : [];
           this.snackBar.open('Movie added to favorites', 'OK', { duration: 2000 });
         },
         error: (error) => {
@@ -160,14 +177,14 @@ export class MovieCardComponent implements OnInit {
 
   openGenreDialog(genre: any): void {
     this.dialog.open(GenreDialogComponent, {
-      data: genre || { name: 'Unknown Genre', description: 'No description available.' },
+      data: genre || { Name: 'Unknown Genre', Description: 'No description available.' },
       width: '400px'
     });
   }
 
   openDirectorDialog(director: any): void {
     this.dialog.open(DirectorDialogComponent, {
-      data: director || { name: 'Unknown Director', bio: 'No biography available.' },
+      data: director || { Name: 'Unknown Director', Bio: 'No biography available.' },
       width: '400px'
     });
   }

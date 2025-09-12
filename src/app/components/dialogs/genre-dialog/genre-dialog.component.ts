@@ -9,9 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule],
   template: `
-    <h2 mat-dialog-title>{{ data.name }}</h2>
+    <h2 mat-dialog-title>{{ data.Name || data.name }}</h2>
     <div mat-dialog-content>
-      <p>{{ data.description }}</p>
+      <p>{{ data.Description || data.description }}</p>
     </div>
     <div mat-dialog-actions>
       <button mat-button (click)="dialogRef.close()">Close</button>

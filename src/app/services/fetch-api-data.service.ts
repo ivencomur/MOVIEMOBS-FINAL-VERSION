@@ -31,7 +31,15 @@ export class FetchApiDataService {
 
   public userRegistration(userDetails: any): Observable<any> {
     console.log('Registration data being sent:', userDetails);
-    return this.http.post(API_URL + 'users', userDetails, { 
+    // Transform to match backend expectations
+    const backendUserData = {
+      Username: userDetails.username,
+      Password: userDetails.password,
+      Email: userDetails.email,
+      Birthday: userDetails.birthday
+    };
+    
+    return this.http.post(API_URL + 'users', backendUserData, { 
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     }).pipe(
       catchError(this.handleError)
@@ -145,4 +153,3 @@ export class FetchApiDataService {
     return throwError(() => new Error(errorMessage));
   }
 }
-
