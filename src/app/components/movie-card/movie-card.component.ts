@@ -86,6 +86,11 @@ import { SynopsisDialogComponent } from '../dialogs/synopsis-dialog/synopsis-dia
       width: 100%;
       height: 400px;
       object-fit: cover;
+      transition: opacity 0.3s ease;
+      background-color: #f0f0f0;
+    }
+    .movie-image.loading {
+      opacity: 0.5;
     }
     mat-card-actions {
       display: flex;
