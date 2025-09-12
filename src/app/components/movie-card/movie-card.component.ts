@@ -30,20 +30,22 @@ import { SynopsisDialogComponent } from '../dialogs/synopsis-dialog/synopsis-dia
           </mat-card-header>
           
           <img mat-card-image 
-               [src]="movie.ImagePath || 'assets/no-image.png'" 
+               [src]="getImagePath(movie)" 
                [alt]="movie.Title"
-               class="movie-image">
+               class="movie-image"
+               (error)="onImageError($event)">
           
           <mat-card-content>
-            <p>{{ movie.Description | slice:0:100 }}{{ movie.Description?.length > 100 ? '...' : '' }}</p>
-            <p><strong>Genre:</strong> {{ movie.Genre?.Name || 'Unknown' }}</p>
-            <p><strong>Director:</strong> {{ movie.Director?.Name || 'Unknown' }}</p>
+            <p>{{ getDescription(movie) | slice:0:100 }}{{ (getDescription(movie) || '').length > 100 ? '...' : '' }}</p>
+            <p><strong>Genre:</strong> {{ getGenreName(movie) }}</p>
+            <p><strong>Director:</strong> {{ getDirectorName(movie) }}</p>
             <p><strong>Year:</strong> {{ movie.ReleaseYear || 'N/A' }}</p>
+            <p *ngIf="movie.Rating"><strong>Rating:</strong> {{ movie.Rating }}/10</p>
           </mat-card-content>
           
           <mat-card-actions>
-            <button mat-button (click)="openGenreDialog(movie.Genre)">Genre</button>
-            <button mat-button (click)="openDirectorDialog(movie.Director)">Director</button>
+            <button mat-button (click)="openGenreDialog(movie)">Genre</button>
+            <button mat-button (click)="openDirectorDialog(movie)">Director</button>
             <button mat-button (click)="openSynopsisDialog(movie)">Synopsis</button>
             
             <button mat-icon-button 
@@ -145,6 +147,41 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
+  // Helper methods to handle different data structures
+  getImagePath(movie: any): string {
+    return movie.ImagePath || movie.imagePath || 'assets/no-image.png';
+  }
+
+  getDescription(movie: any): string {
+    return movie.Description || movie.description || 'No description available.';
+  }
+
+  getGenreName(movie: any): string {
+    if (movie.Genre) {
+      if (typeof movie.Genre === 'string') {
+        return movie.Genre;
+      } else if (movie.Genre.Name) {
+        return movie.Genre.Name;
+      } else if (movie.Genre.name) {
+        return movie.Genre.name;
+      }
+    }
+    return 'Unknown';
+  }
+
+  getDirectorName(movie: any): string {
+    if (movie.Director) {
+      if (typeof movie.Director === 'string') {
+        return movie.Director;
+      } else if (movie.Director.Name) {
+        return movie.Director.Name;
+      } else if (movie.Director.name) {
+        return movie.Director.name;
+      }
+    }
+    return 'Unknown';
+  }
+
   isFavorite(movieId: string): boolean {
     return this.favoriteMovies.includes(movieId);
   }
@@ -175,23 +212,38 @@ export class MovieCardComponent implements OnInit {
     }
   }
 
-  openGenreDialog(genre: any): void {
+  onImageError(event: any): void {
+    event.target.src = 'assets/no-image.png';
+  }
+
+  openGenreDialog(movie: any): void {
+    const genreData = movie.Genre || { Name: 'Unknown Genre', Description: 'No description available.' };
     this.dialog.open(GenreDialogComponent, {
-      data: genre || { Name: 'Unknown Genre', Description: 'No description available.' },
+      data: genreData,
       width: '400px'
     });
   }
 
-  openDirectorDialog(director: any): void {
+  openDirectorDialog(movie: any): void {
+    const directorData = movie.Director || { Name: 'Unknown Director', Bio: 'No biography available.' };
     this.dialog.open(DirectorDialogComponent, {
-      data: director || { Name: 'Unknown Director', Bio: 'No biography available.' },
+      data: directorData,
       width: '400px'
     });
   }
 
   openSynopsisDialog(movie: any): void {
+    const synopsisData = {
+      Title: movie.Title || 'Unknown Movie',
+      Description: this.getDescription(movie),
+      Genre: { name: this.getGenreName(movie) },
+      Director: { name: this.getDirectorName(movie) },
+      ReleaseYear: movie.ReleaseYear,
+      Rating: movie.Rating
+    };
+    
     this.dialog.open(SynopsisDialogComponent, {
-      data: movie || { Title: 'Unknown Movie', Description: 'No synopsis available.' },
+      data: synopsisData,
       width: '500px'
     });
   }
