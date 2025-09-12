@@ -9,9 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule],
   template: `
-    <h2 mat-dialog-title>{{ data.name }}</h2>
+    <h2 mat-dialog-title>{{ getGenreName() }}</h2>
     <div mat-dialog-content>
-      <p>{{ data.description }}</p>
+      <p>{{ getGenreDescription() }}</p>
     </div>
     <div mat-dialog-actions>
       <button mat-button (click)="dialogRef.close()">Close</button>
@@ -23,4 +23,14 @@ export class GenreDialogComponent {
     public dialogRef: MatDialogRef<GenreDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
+
+  getGenreName(): string {
+    if (!this.data) return 'Unknown Genre';
+    return this.data.Name || this.data.name || 'Unknown Genre';
+  }
+
+  getGenreDescription(): string {
+    if (!this.data) return 'No description available.';
+    return this.data.Description || this.data.description || 'No description available.';
+  }
 }
