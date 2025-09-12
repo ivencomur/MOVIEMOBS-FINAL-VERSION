@@ -1,6 +1,3 @@
-/**
- * Component for displaying all movies as cards.
- */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -92,34 +89,24 @@ export class MovieCardComponent implements OnInit {
   movies: any[] = [];
   favoriteMovies: string[] = [];
 
-  /**
-   * @param fetchApiData Service for API calls.
-   * @param dialog Service for opening dialogs.
-   * @param snackBar Service for showing notifications.
-   */
   constructor(
     public fetchApiData: FetchApiDataService,
     public dialog: MatDialog,
     public snackBar: MatSnackBar
   ) {}
 
-  /**
-   * Lifecycle hook that runs when the component is initialized.
-   */
   ngOnInit(): void {
     this.getMovies();
     this.getFavorites();
   }
 
-  /**
-   * Fetches all movies from the API.
-   */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe({
       next: (resp: any) => {
         this.movies = resp;
+        console.log('Movies loaded:', this.movies);
       },
-      error: (error: any) => {
+      error: (error) => {
         console.error('Error loading movies:', error);
         this.snackBar.open('Error loading movies. Please try again.', 'OK', {
           duration: 4000
@@ -128,33 +115,23 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
-  /**
-   * Fetches the user's favorite movies.
-   */
   getFavorites(): void {
     this.fetchApiData.getUserProfile().subscribe({
       next: (resp: any) => {
         this.favoriteMovies = resp.favoriteMovies ? resp.favoriteMovies.map((movie: any) => movie._id || movie) : [];
+        console.log('Favorites loaded:', this.favoriteMovies);
       },
-      error: (error: any) => {
+      error: (error) => {
         console.error('Error loading favorites:', error);
+        // Don't show error for favorites as it's not critical
       }
     });
   }
 
-  /**
-   * Checks if a movie is in the user's list of favorites.
-   * @param movieId - The ID of the movie to check.
-   * @returns True if the movie is a favorite, false otherwise.
-   */
   isFavorite(movieId: string): boolean {
     return this.favoriteMovies.includes(movieId);
   }
 
-  /**
-   * Toggles a movie's favorite status (adds or removes it).
-   * @param movieId - The ID of the movie to toggle.
-   */
   toggleFavorite(movieId: string): void {
     if (this.isFavorite(movieId)) {
       this.fetchApiData.removeFavoriteMovie(movieId).subscribe({
@@ -162,7 +139,8 @@ export class MovieCardComponent implements OnInit {
           this.favoriteMovies = resp.favoriteMovies ? resp.favoriteMovies.map((movie: any) => movie._id || movie) : [];
           this.snackBar.open('Movie removed from favorites', 'OK', { duration: 2000 });
         },
-        error: (error: any) => {
+        error: (error) => {
+          console.error('Error removing favorite:', error);
           this.snackBar.open('Error removing favorite. Please try again.', 'OK', { duration: 4000 });
         }
       });
@@ -172,17 +150,14 @@ export class MovieCardComponent implements OnInit {
           this.favoriteMovies = resp.favoriteMovies ? resp.favoriteMovies.map((movie: any) => movie._id || movie) : [];
           this.snackBar.open('Movie added to favorites', 'OK', { duration: 2000 });
         },
-        error: (error: any) => {
+        error: (error) => {
+          console.error('Error adding favorite:', error);
           this.snackBar.open('Error adding favorite. Please try again.', 'OK', { duration: 4000 });
         }
       });
     }
   }
 
-  /**
-   * Opens a dialog with details about a movie's genre.
-   * @param genre - The genre object.
-   */
   openGenreDialog(genre: any): void {
     this.dialog.open(GenreDialogComponent, {
       data: genre || { name: 'Unknown Genre', description: 'No description available.' },
@@ -190,10 +165,6 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
-  /**
-   * Opens a dialog with details about a movie's director.
-   * @param director - The director object.
-   */
   openDirectorDialog(director: any): void {
     this.dialog.open(DirectorDialogComponent, {
       data: director || { name: 'Unknown Director', bio: 'No biography available.' },
@@ -201,10 +172,6 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
-  /**
-   * Opens a dialog with the movie's synopsis.
-   * @param movie - The movie object.
-   */
   openSynopsisDialog(movie: any): void {
     this.dialog.open(SynopsisDialogComponent, {
       data: movie || { Title: 'Unknown Movie', Description: 'No synopsis available.' },
