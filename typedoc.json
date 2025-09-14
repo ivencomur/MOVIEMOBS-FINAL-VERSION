@@ -1,0 +1,21 @@
+{
+  "entryPoints": [
+    "src/app/app.component.ts",
+    "src/app/services/fetch-api-data.service.ts",
+    "src/app/components/movie-card/movie-card.component.ts",
+    "src/app/components/user-profile/user-profile.component.ts",
+    "src/app/components/nav-bar/nav-bar.component.ts",
+    "src/app/components/welcome-page/welcome-page.component.ts",
+    "src/app/components/user-login-form/user-login-form.component.ts",
+    "src/app/components/user-registration-form/user-registration-form.component.ts"
+  ],
+  "out": "docs",
+  "theme": "default",
+  "includeVersion": true,
+  "excludePrivate": false,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "readme": "README.md",
+  "name": "MovieMobs Angular Client Documentation",
+  "tsconfig": "tsconfig.json"
+}
