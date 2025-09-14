@@ -205,6 +205,23 @@ The application uses Angular Material with custom SCSS:
 - Offline functionality with service workers
 - Advanced user preferences
 
+## AI Assistance Declaration
+
+This project required extensive AI assistance to overcome significant technical challenges encountered during development, particularly related to rapidly changing framework versions and deprecated dependencies.
+
+**AI assistance was crucial for:**
+- Resolving Angular dependency conflicts and version compatibility issues
+- Troubleshooting application startup failures due to missing or incompatible packages
+- Reconstructing component implementations when course materials referenced deprecated Angular features
+- Standardizing TypeScript documentation and comment formatting for TypeDoc generation
+- Providing current best practices when original tutorials became obsolete due to framework updates
+
+**Development Context:**
+The development process demanded significant independent problem-solving capabilities due to limited mentor support and course materials that had become outdated relative to current framework versions. Leveraging AI assistance enabled successful navigation of these technical obstacles while maintaining application functionality and code quality standards.
+
+**Human Oversight:**
+All AI-generated solutions underwent thorough testing and review to ensure compatibility with project requirements. Core architectural decisions and user experience design remained under full developer control throughout the development process.
+
 ## License
 
 This project is licensed under the MIT License.
