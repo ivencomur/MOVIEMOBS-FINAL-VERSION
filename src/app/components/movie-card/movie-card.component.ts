@@ -14,9 +14,9 @@ import { SynopsisDialogComponent } from '../dialogs/synopsis-dialog/synopsis-dia
   selector: 'app-movie-card',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatCardModule, 
-    MatButtonModule, 
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
     MatIconModule,
     MatSnackBarModule
   ],
@@ -129,7 +129,7 @@ export class MovieCardComponent implements OnInit {
         this.isLoading = false;
         console.log('Movies loaded:', this.movies);
       },
-      error: (error) => {
+      error: (error: any) => {
         this.isLoading = false;
         console.error('Error loading movies:', error);
         this.snackBar.open('Error loading movies. Please ensure the backend is running.', 'OK', {
@@ -140,14 +140,13 @@ export class MovieCardComponent implements OnInit {
   }
 
   getFavorites(): void {
-    this.fetchApiData.getUserProfile().subscribe({
+    this.fetchApiData.getUser().subscribe({
       next: (resp: any) => {
         this.favoriteMovies = resp.FavoriteMovies ? resp.FavoriteMovies.map((movie: any) => movie._id || movie) : [];
         console.log('Favorites loaded:', this.favoriteMovies);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading favorites:', error);
-        // Don't show error for favorites as it's not critical
       }
     });
   }
@@ -193,12 +192,12 @@ export class MovieCardComponent implements OnInit {
 
   toggleFavorite(movieId: string): void {
     if (this.isFavorite(movieId)) {
-      this.fetchApiData.removeFavoriteMovie(movieId).subscribe({
+      this.fetchApiData.deleteFavoriteMovie(movieId).subscribe({
         next: (resp: any) => {
           this.favoriteMovies = resp.FavoriteMovies ? resp.FavoriteMovies.map((movie: any) => movie._id || movie) : [];
           this.snackBar.open('Movie removed from favorites', 'OK', { duration: 2000 });
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error removing favorite:', error);
           this.snackBar.open('Error removing favorite. Please try again.', 'OK', { duration: 4000 });
         }
@@ -209,7 +208,7 @@ export class MovieCardComponent implements OnInit {
           this.favoriteMovies = resp.FavoriteMovies ? resp.FavoriteMovies.map((movie: any) => movie._id || movie) : [];
           this.snackBar.open('Movie added to favorites', 'OK', { duration: 2000 });
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error adding favorite:', error);
           this.snackBar.open('Error adding favorite. Please try again.', 'OK', { duration: 4000 });
         }
