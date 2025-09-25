@@ -1,227 +1,345 @@
 # MovieMobs Angular Client
 
-A responsive single-page application (SPA) for browsing and managing movie collections, built with Angular and Angular Material.
+A responsive single-page application (SPA) for browsing and managing movie collections, built with Angular 18 and Angular Material.
 
-## Overview
+## 🎬 Overview
 
 MovieMobs Angular Client provides a modern, user-friendly interface for the MovieMobs movie database. Users can browse movies, view detailed information about genres and directors, manage their profiles, and maintain a list of favorite movies.
 
-## Features
+## ✨ Features
 
-- **User Authentication**: Secure registration and login system
-- **Movie Browsing**: Browse and search through movie collections
+- **User Authentication**: Secure registration and login system with JWT tokens
+- **Movie Browsing**: Browse and search through movie collections with detailed cards
 - **Detailed Information**: View comprehensive movie details, director biographies, and genre descriptions
 - **User Profiles**: Manage personal information and account settings
-- **Favorites Management**: Add and remove movies from personal favorites
+- **Favorites Management**: Add and remove movies from personal favorites list
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Material Design**: Clean, modern interface using Angular Material
+- **Material Design**: Clean, modern interface using Angular Material components
 - **Real-time Updates**: Dynamic content updates without page refreshes
 
-## Technologies Used
+## 🚀 Technologies Used
 
-- **Angular 18** - Frontend framework
-- **Angular Material** - UI component library
-- **TypeScript** - Programming language
-- **RxJS** - Reactive programming library
-- **Angular Router** - Client-side routing
-- **Angular HTTP Client** - API communication
-- **SCSS** - Styling and theming
+- **Angular 18** - Frontend framework with standalone components
+- **Angular Material** - UI component library for consistent design
+- **TypeScript** - Type-safe programming language
+- **RxJS** - Reactive programming library for async operations
+- **Angular Router** - Client-side routing and navigation
+- **Angular HTTP Client** - RESTful API communication
+- **SCSS** - Advanced styling and theming capabilities
 - **Angular CLI** - Development and build tools
 
-## Prerequisites
+## 📋 Prerequisites
 
-- Node.js (v18 or higher)
-- npm package manager
-- Angular CLI (`npm install -g @angular/cli`)
-- MovieMobs API running on `http://localhost:8080`
+Before you begin, ensure you have the following installed:
 
-## Installation
+- **Node.js** (v18 or higher) - [Download from nodejs.org](https://nodejs.org/)
+- **npm** package manager (comes with Node.js)
+- **Angular CLI** - Install globally:
+  ```bash
+  npm install -g @angular/cli
+  ```
+- **MovieMobs API** - Backend server running on `http://localhost:8080`
 
-1. Clone the repository:
+## 🛠️ Installation
+
+1. **Clone the repository:**
    ```bash
    git clone <repository-url>
    cd moviemobs-angular-client
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. Ensure the backend API is running:
-   - Start the MovieMobs API on `http://localhost:8080`
-   - Verify the connection in `src/app/services/fetch-api-data.service.ts`
+3. **Configure environment:**
+   - Development: API runs on `http://localhost:8080`
+   - Production: API hosted on `https://iecm-movies-api.onrender.com`
 
-## Development
+4. **Ensure backend is running:**
+   - Start the MovieMobs API server
+   - Verify connection by checking `src/app/services/fetch-api-data.service.ts`
 
-Run the development server:
+## 🏃‍♂️ Development
+
+### Start Development Server
 ```bash
 npm start
 # or
 ng serve
 ```
+Navigate to `http://localhost:4200`. The application will automatically reload when you make changes.
 
-Navigate to `http://localhost:4200`. The application will automatically reload when you make changes to the source files.
-
-## Build
-
-Build the project for production:
+### Build for Production
 ```bash
 npm run build
 # or
 ng build
 ```
+Build artifacts will be stored in the `dist/` directory with optimizations enabled.
 
-Build artifacts will be stored in the `dist/` directory.
-
-## Testing
-
-Run unit tests:
+### Run Tests
 ```bash
 npm run test
 # or
 ng test
 ```
+Launches the test runner in interactive watch mode using Karma.
 
-## Application Structure
+### Watch Mode
+```bash
+npm run watch
+```
+Builds the project and watches for changes, recompiling automatically.
+
+## 🏗️ Project Structure
 
 ```
 src/
 ├── app/
 │   ├── components/
-│   │   ├── welcome-page/          # Landing page with login/register
-│   │   ├── movie-card/            # Movie grid and card components
+│   │   ├── welcome-page/          # Landing page with authentication
+│   │   ├── movie-card/            # Movie grid and detail cards
 │   │   ├── user-profile/          # User profile management
-│   │   ├── user-login-form/       # Login dialog
-│   │   ├── user-registration-form/ # Registration dialog
-│   │   ├── nav-bar/               # Navigation component
-│   │   └── dialogs/               # Movie detail dialogs
-│   │       ├── director-dialog/
-│   │       ├── genre-dialog/
-│   │       └── synopsis-dialog/
+│   │   ├── user-login-form/       # Login dialog component
+│   │   ├── user-registration-form/ # Registration dialog component
+│   │   ├── nav-bar/               # Navigation bar component
+│   │   └── dialogs/               # Modal dialog components
+│   │       ├── director-dialog/   # Director information modal
+│   │       ├── genre-dialog/      # Genre information modal
+│   │       └── synopsis-dialog/   # Movie synopsis modal
 │   ├── services/
 │   │   └── fetch-api-data.service.ts # API communication service
-│   ├── app.component.ts           # Root component
-│   ├── app.config.ts             # App configuration
-│   └── app.routes.ts             # Routing configuration
-├── assets/                       # Static assets
-└── styles.scss                   # Global styles
+│   ├── app.component.ts           # Root application component
+│   ├── app.config.ts              # Application configuration
+│   └── app.routes.ts              # Routing configuration
+├── assets/                        # Static assets and images
+├── environments/                  # Environment configurations
+└── styles.scss                    # Global application styles
 ```
 
-## Key Components
+## 🎯 Key Components
 
 ### WelcomePageComponent
-Landing page with authentication options for new and existing users.
+- Landing page with authentication options
+- Material Design cards for login/register actions
+- Clean, centered layout for new and returning users
 
 ### MovieCardComponent
-Displays movie collection in a responsive grid layout with detailed information cards.
+- Responsive grid layout displaying movie collection
+- Interactive movie cards with images, descriptions, and metadata
+- Favorite toggle functionality with heart icon
+- Modal dialogs for detailed genre, director, and synopsis information
 
 ### UserProfileComponent
-Allows users to view and edit their profile information and manage favorite movies.
+- User account management and profile editing
+- Display and management of favorite movies
+- Account deletion functionality with confirmation
+- Form validation and error handling
 
 ### NavigationComponent
-Responsive navigation bar with authentication state management.
+- Responsive navigation bar with Material Design
+- Authentication state management
+- Quick access to movies, profile, and logout functionality
+- Mobile-friendly hamburger menu
 
 ### Dialog Components
-Modal dialogs for displaying detailed information about directors, genres, and movie synopses.
+- **DirectorDialogComponent**: Modal displaying director biography and details
+- **GenreDialogComponent**: Modal showing genre descriptions and characteristics  
+- **SynopsisDialogComponent**: Modal with complete movie synopsis and details
 
-## Services
+## 🔧 Services
 
 ### FetchApiDataService
-Centralized service for all API communication including:
-- User authentication and profile management
-- Movie data retrieval
-- Favorites management
-- Error handling and logging
+Centralized service managing all API communication:
 
-## Routing
+- **User Authentication**: Registration, login, and profile management
+- **Movie Data**: Retrieval of movies with populated relationships
+- **Favorites Management**: Add/remove movies from user favorites
+- **Error Handling**: Comprehensive error processing and user feedback
+- **Token Management**: JWT token storage and automatic header injection
 
-- `/welcome` - Landing page (default)
-- `/movies` - Movie browsing (authenticated users)
+**Key Methods:**
+- `userRegistration(userDetails)` - Register new user account
+- `userLogin(userDetails)` - Authenticate user credentials  
+- `getAllMovies()` - Fetch complete movie collection
+- `getUserProfile()` - Retrieve user profile with favorites
+- `addFavoriteMovie(movieId)` - Add movie to favorites list
+- `removeFavoriteMovie(movieId)` - Remove movie from favorites
+- `editUser(updatedUser)` - Update user profile information
+- `deleteUser()` - Delete user account permanently
+
+## 🛣️ Routing
+
+The application uses Angular Router for navigation:
+
+- `/welcome` - Landing page (default route)
+- `/movies` - Movie browsing interface (authenticated users)
 - `/profile` - User profile management (authenticated users)
 
-## Authentication
+**Route Guards**: Authentication required for `/movies` and `/profile` routes.
 
-The application uses JWT token-based authentication:
-- Tokens are stored in localStorage
-- Protected routes require valid authentication
-- Automatic logout on token expiration
-- Secure API communication with Bearer tokens
+## 🔐 Authentication
 
-## Responsive Design
+JWT token-based authentication system:
 
-The application is fully responsive with:
-- Mobile-first design approach
-- Flexible grid layouts
-- Touch-friendly interactions
-- Optimized navigation for all screen sizes
+- **Token Storage**: Secure storage in localStorage
+- **Automatic Headers**: Bearer token injection in API requests
+- **Route Protection**: Guards prevent unauthorized access
+- **Session Management**: Automatic logout on token expiration
+- **Error Handling**: Clear feedback for authentication failures
 
-## Documentation
+## 📱 Responsive Design
 
-TypeScript documentation is available in the `/docs` folder. Open `docs/index.html` to view complete component and service documentation generated with TypeDoc.
+Mobile-first responsive design approach:
 
-## API Integration
+- **Flexible Grid Layouts**: CSS Grid and Flexbox for adaptive layouts
+- **Touch-Friendly Interactions**: Optimized button sizes and tap targets
+- **Breakpoint Management**: Responsive behavior at key screen sizes
+- **Mobile Navigation**: Collapsible navigation for smaller screens
 
-The application integrates with the MovieMobs API for:
-- User registration and authentication
-- Movie data retrieval with populated relationships
-- Real-time favorites management
-- Profile updates and account management
+## 📚 Documentation
 
-## Styling
+Comprehensive TypeScript documentation available in the `/docs` folder:
 
-The application uses Angular Material with custom SCSS:
-- Material Design components
-- Custom color theming
-- Responsive typography
-- Consistent spacing and layout
+- **Generated with TypeDoc**: Professional API documentation
+- **Component Documentation**: Detailed component interfaces and methods
+- **Service Documentation**: Complete API service documentation
+- **Code Examples**: Usage examples for key functionality
 
-## Browser Support
+Access documentation by opening `docs/index.html` in your browser.
+
+## 🔗 API Integration
+
+Integration with MovieMobs REST API:
+
+- **Base URL**: Configurable via environment files
+- **Endpoints**: Complete CRUD operations for users and movies
+- **Data Population**: Movie objects with populated genre/director relationships
+- **Error Handling**: Graceful degradation and user feedback
+- **Retry Logic**: Automatic retry for failed requests
+
+## 🎨 Styling and Theming
+
+Angular Material with custom SCSS:
+
+- **Material Design**: Consistent component library
+- **Custom Theming**: Brand-specific color schemes
+- **Responsive Typography**: Scalable text across devices
+- **Animation**: Smooth transitions and micro-interactions
+
+## 🌐 Browser Support
+
+Tested and compatible with:
 
 - Chrome (latest)
-- Firefox (latest)
+- Firefox (latest) 
 - Safari (latest)
 - Edge (latest)
 
-## Contributing
+## 🧪 Testing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new features
-5. Ensure all tests pass
-6. Submit a pull request
+Testing setup with Jasmine and Karma:
 
-## Known Issues
+- **Unit Tests**: Component and service testing
+- **Integration Tests**: End-to-end user workflows
+- **Test Coverage**: Comprehensive coverage reporting
+- **Continuous Testing**: Watch mode for development
 
-- Images may not load if the backend doesn't provide valid image URLs
-- First API request after server sleep may take longer to respond
+## 🚀 Deployment
 
-## Future Enhancements
+### Production Build
+```bash
+ng build --configuration production
+```
 
-- Advanced search and filtering
-- Movie reviews and ratings
-- Social sharing features
-- Offline functionality with service workers
-- Advanced user preferences
+### Environment Configuration
+- Development: `src/environments/environment.ts`
+- Production: `src/environments/environment.prod.ts`
 
-## AI Assistance Declaration
+### Build Optimization
+- Tree shaking for smaller bundle sizes
+- Ahead-of-time (AOT) compilation
+- Service worker support for offline functionality
+- Progressive Web App (PWA) capabilities
+
+## 🔧 Code Scaffolding
+
+Generate new components and services:
+
+```bash
+# Generate a new component
+ng generate component component-name
+
+# Generate a new service  
+ng generate service service-name
+
+# Generate other schematics
+ng generate directive|pipe|service|class|guard|interface|enum|module
+```
+
+## ❗ Known Issues
+
+- **Image Loading**: Some movie images may not display if backend doesn't provide valid URLs
+- **API Response Time**: First request after server sleep may have longer response times
+- **Browser Storage**: Application requires localStorage for authentication tokens
+
+## 🔮 Future Enhancements
+
+- **Advanced Search**: Filtering by genre, year, rating, and director
+- **Movie Reviews**: User rating and review system
+- **Social Features**: Share favorites and recommendations
+- **Offline Support**: Service worker implementation
+- **User Preferences**: Customizable interface settings
+- **Movie Recommendations**: AI-powered suggestion engine
+
+## 🤖 AI Assistance Declaration
 
 This project required extensive AI assistance to overcome significant technical challenges encountered during development, particularly related to rapidly changing framework versions and deprecated dependencies.
 
-**AI assistance was crucial for:**
+### AI Assistance Was Crucial For:
 - Resolving Angular dependency conflicts and version compatibility issues
-- Troubleshooting application startup failures due to missing or incompatible packages
+- Troubleshooting application startup failures due to missing or incompatible packages  
 - Reconstructing component implementations when course materials referenced deprecated Angular features
 - Standardizing TypeScript documentation and comment formatting for TypeDoc generation
 - Providing current best practices when original tutorials became obsolete due to framework updates
 
-**Development Context:**
+### Development Context:
 The development process demanded significant independent problem-solving capabilities due to limited mentor support and course materials that had become outdated relative to current framework versions. Leveraging AI assistance enabled successful navigation of these technical obstacles while maintaining application functionality and code quality standards.
 
-**Human Oversight:**
+### Human Oversight:
 All AI-generated solutions underwent thorough testing and review to ensure compatibility with project requirements. Core architectural decisions and user experience design remained under full developer control throughout the development process.
 
-## License
+## 🤝 Contributing
 
-This project is licensed under the MIT License.
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes with proper testing
+4. Ensure all tests pass: `npm run test`
+5. Add documentation for new features
+6. Submit a pull request with detailed description
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📞 Support
+
+For additional help and support:
+
+- **Angular CLI**: Run `ng help` or visit [Angular CLI Documentation](https://angular.dev/tools/cli)
+- **Angular Material**: [Material Design Components](https://material.angular.io/)
+- **TypeScript**: [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+- **Project Issues**: Submit issues via the repository issue tracker
+
+## 🙏 Acknowledgments
+
+- Angular team for the robust framework and excellent documentation
+- Angular Material team for the comprehensive component library
+- TypeDoc for automated documentation generation
+- The open-source community for invaluable resources and support
+
+---
+
+**MovieMobs Angular Client** - Discover and manage your favorite movies with style! 🎬✨

@@ -1,0 +1,11 @@
+<!-- Before (showed the ObjectId): -->
+<!-- {{ movie.Genre }} / {{ movie.Director }} -->
+
+<!-- After (show the names): -->
+<span class="chip chip-genre" (click)="openGenre(movie.Genre?.Name)">
+  {{ movie.Genre?.Name }}
+</span>
+
+<span class="chip chip-director" (click)="openDirector(movie.Director?.Name)">
+  {{ movie.Director?.Name }}
+</span>
