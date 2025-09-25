@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://iecm-movies-api.onrender.com'
+  apiUrl: 'https://iecm-moviemobs-api.onrender.com/'
 };

@@ -31,17 +31,17 @@ import { FetchApiDataService } from '../../services/fetch-api-data.service';
           <form>
             <mat-form-field appearance="fill">
               <mat-label>Username</mat-label>
-              <input matInput [(ngModel)]="updatedUserData.username" name="username" required>
+              <input matInput [(ngModel)]="updatedUserData.Username" name="Username" required>
             </mat-form-field>
             
             <mat-form-field appearance="fill">
               <mat-label>Email</mat-label>
-              <input matInput type="email" [(ngModel)]="updatedUserData.email" name="email" required>
+              <input matInput type="email" [(ngModel)]="updatedUserData.Email" name="Email" required>
             </mat-form-field>
             
             <mat-form-field appearance="fill">
               <mat-label>Birthday</mat-label>
-              <input matInput type="date" [(ngModel)]="updatedUserData.birthday" name="birthday">
+              <input matInput type="date" [(ngModel)]="updatedUserData.Birthday" name="Birthday">
             </mat-form-field>
           </form>
         </mat-card-content>
@@ -59,7 +59,7 @@ import { FetchApiDataService } from '../../services/fetch-api-data.service';
           <div class="favorites-grid">
             <div *ngFor="let movie of favoriteMovies" class="favorite-movie">
               <h4>{{ movie.Title }}</h4>
-              <p>{{ movie.Genre?.name }} • {{ movie.ReleaseYear }}</p>
+              <p>{{ movie.Genre?.Name }} • {{ movie.ReleaseYear }}</p>
             </div>
           </div>
         </mat-card-content>
@@ -108,7 +108,7 @@ import { FetchApiDataService } from '../../services/fetch-api-data.service';
 export class UserProfileComponent implements OnInit {
   user: any = {};
   favoriteMovies: any[] = [];
-  @Input() updatedUserData = { username: '', email: '', birthday: '' };
+  @Input() updatedUserData = { Username: '', Email: '', Birthday: '' };
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -121,21 +121,21 @@ export class UserProfileComponent implements OnInit {
   }
 
   getUser(): void {
-    this.fetchApiData.getUserProfile().subscribe({
+    this.fetchApiData.getUser().subscribe({
       next: (resp: any) => {
         this.user = resp;
-        this.favoriteMovies = resp.favoriteMovies || [];
+        this.favoriteMovies = resp.FavoriteMovies || [];
         
         // Pre-populate form with current user data
         this.updatedUserData = {
-          username: resp.username || '',
-          email: resp.email || '',
-          birthday: resp.birthday ? resp.birthday.split('T')[0] : ''
+          Username: resp.Username || '',
+          Email: resp.Email || '',
+          Birthday: resp.Birthday ? resp.Birthday.split('T')[0] : ''
         };
         
         console.log('User profile loaded:', this.user);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading user profile:', error);
         this.snackBar.open('Error loading profile. Please try again.', 'OK', {
           duration: 4000
@@ -147,9 +147,9 @@ export class UserProfileComponent implements OnInit {
   updateUser(): void {
     // Clean data before sending
     const cleanedData = {
-      username: this.updatedUserData.username.trim(),
-      email: this.updatedUserData.email.trim().toLowerCase(),
-      birthday: this.updatedUserData.birthday || undefined
+      Username: this.updatedUserData.Username.trim(),
+      Email: this.updatedUserData.Email.trim().toLowerCase(),
+      Birthday: this.updatedUserData.Birthday || undefined
     };
 
     // Remove undefined values
@@ -171,7 +171,7 @@ export class UserProfileComponent implements OnInit {
           duration: 3000
         });
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error updating profile:', error);
         this.snackBar.open(error.message || 'Error updating profile. Please try again.', 'OK', {
           duration: 4000
@@ -194,7 +194,7 @@ export class UserProfileComponent implements OnInit {
           localStorage.removeItem('user');
           this.router.navigate(['welcome']);
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error deleting account:', error);
           this.snackBar.open(error.message || 'Error deleting account. Please try again.', 'OK', {
             duration: 4000
